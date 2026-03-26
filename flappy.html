@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Flappy Guacamaya Pro | SrRexGame</title>
+    <style>
+        :root { --amarillo: #FFD700; --azul: #0033A0; --rojo: #CE1126; }
+        body { margin: 0; padding: 0; overflow: hidden; font-family: 'Inter', sans-serif; background: #000; }
+        
+        #game-container {
+            width: 100vw; height: 100vh;
+            background-image: url('fondo-flappy.jpg'); /* Tu imagen aquí */
+            background-size: cover;
+            background-position: bottom;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #bird {
+            position: absolute; left: 50px; top: 50%;
+            width: 40px; height: 40px;
+            font-size: 60px; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .pipe {
+            position: absolute; width: 60px;
+            background: linear-gradient(to right, var(--amarillo), var(--azul), var(--rojo));
+            border: 3px solid white; box-sizing: border-box;
+            z-index: 5;
+        }
+
+        #score-board {
+            position: absolute; top: 50px; width: 100%;
+            text-align: center; font-size: 3rem; font-weight: 800;
+            color: white; text-shadow: 3px 3px 0 #000; z-index: 20;
+        }
+
+        /* Menú Game Over */
+        #game-over {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 100;
+            flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 40px; margin: 10px; border-radius: 50px;
+            border: none; font-weight: bold; cursor: pointer; font-size: 1.2rem;
+        }
+        .reintentar { background: var(--amarillo); color: #000; }
+        .salir { background: var(--rojo); color: #fff; text-decoration: none; }
+
+        .back-btn {
+            position: absolute; top: 15px; left: 15px; z-index: 50;
+            background: rgba(0,0,0,0.5); color: white; border: none;
+            padding: 10px 20px; border-radius: 20px; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container" onclick="jump()">
+        <button class="back-btn" onclick="window.location.href='index.html'">✖ Salir</button>
+        <div id="score-board">0</div>
+        <div id="bird">🦜</div>
+    </div>
+
+    <div id="game-over">
+        <h1 style="color: var(--rojo); font-size: 3.5rem; margin-bottom: 0;">¡CAÍSTE!</h1>
+        <h2 id="final-score" style="color: white; margin-bottom: 30px;">Puntos: 0</h2>
+        <button class="btn reintentar" onclick="location.reload()">REINTENTAR</button>
+        <a href="index.html" class="btn salir">SALIR</a>
+    </div>
+
+    <script>
+        const bird = document.getElementById('bird');
+        const container = document.getElementById('game-container');
+        const scoreBoard = document.getElementById('score-board');
+        
+        let birdY = window.innerHeight / 2;
+        let velocity = 0;
+        let gravity = 0.25;
+        let jumpStrength = -6;
+        let score = 0;
+        let isGameOver = false;
+        let pipes = [];
+
+        function jump() {
+            if (isGameOver) return;
+            velocity = jumpStrength;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'ArrowUp') jump();
+        });
+
+        function createPipe() {
+            if (isGameOver) return;
+            const gap = 180; // Espacio para pasar
+            const minPipeHeight = 50;
+            const maxPipeHeight = window.innerHeight - gap - minPipeHeight;
+            const pipeHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight)) + minPipeHeight;
+
+            const pipeTop = document.createElement('div');
+            pipeTop.className = 'pipe';
+            pipeTop.style.height = pipeHeight + 'px';
+            pipeTop.style.top = '0';
+            pipeTop.style.left = window.innerWidth + 'px';
+
+            const pipeBottom = document.createElement('div');
+            pipeBottom.className = 'pipe';
+            pipeBottom.style.height = (window.innerHeight - pipeHeight - gap) + 'px';
+            pipeBottom.style.bottom = '0';
+            pipeBottom.style.left = window.innerWidth + 'px';
+
+            container.appendChild(pipeTop);
+            container.appendChild(pipeBottom);
+
+            pipes.push({ top: pipeTop, bottom: pipeBottom, x: window.innerWidth, passed: false });
+        }
+
+        function update() {
+            if (isGameOver) return;
+
+            velocity += gravity;
+            birdY += velocity;
+            bird.style.top = birdY + 'px';
+           bird.style.transform = `scaleX(-1) rotate(${velocity * 3}deg)`;
+
+            // Colisión suelo/techo
+            if (birdY > window.innerHeight - 40 || birdY < 0) endGame();
+
+            pipes.forEach((p, index) => {
+                p.x -= 3; // Velocidad de las tuberías
+                p.top.style.left = p.x + 'px';
+                p.bottom.style.left = p.x + 'px';
+
+                // Colisión con tuberías
+                const birdRect = bird.getBoundingClientRect();
+                const topRect = p.top.getBoundingClientRect();
+                const botRect = p.bottom.getBoundingClientRect();
+
+                if (
+                    birdRect.right > topRect.left &&
+                    birdRect.left < topRect.right &&
+                    (birdRect.top < topRect.bottom || birdRect.bottom > botRect.top)
+                ) {
+                    endGame();
+                }
+
+                // Sumar puntos
+                if (!p.passed && p.x < 50) {
+                    p.passed = true;
+                    score++;
+                    scoreBoard.innerText = score;
+                }
+
+                // Eliminar tuberías fuera de pantalla
+                if (p.x < -70) {
+                    p.top.remove();
+                    p.bottom.remove();
+                    pipes.splice(index, 1);
+                }
+            });
+
+            requestAnimationFrame(update);
+        }
+
+        function endGame() {
+            isGameOver = true;
+            document.getElementById('game-over').style.display = 'flex';
+            document.getElementById('final-score').innerText = "Puntos: " + score;
+        }
+
+        setInterval(createPipe, 2000);
+        update();
+    </script>
+</body>
+</html>

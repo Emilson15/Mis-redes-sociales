@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SrRexGame | Mis Enlaces 🇻🇪</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --amarillo: #FFD700;
+            --azul: #0033A0;
+            --rojo: #CE1126;
+            --glass: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(-45deg, #0f172a, #001f3f, #330000, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- LAYOUT RESPONSIVO (GRID) --- */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+            align-items: center;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            text-align: center;
+            grid-row: 1;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            grid-row: 2;
+        }
+
+        /* --- ESTILO DE LAS TARJETAS DE JUEGO --- */
+        .game-card {
+            background-size: cover;
+            background-position: center;
+            border: 3px solid var(--amarillo);
+            border-radius: 20px;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: "";
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1;
+        }
+
+        .game-card h3 {
+            position: relative;
+            z-index: 2;
+            color: var(--amarillo);
+            font-size: 1rem;
+            margin: 0;
+            text-shadow: 2px 2px 10px rgba(0,0,0,1);
+            text-align: center;
+        }
+
+        .game-card:hover { 
+            transform: scale(1.1) rotate(2deg); 
+            filter: brightness(1.2);
+            box-shadow: 0 0 30px var(--amarillo);
+        }
+
+        /* --- ADAPTACIÓN PC --- */
+        @media (min-width: 900px) {
+            .main-layout {
+                grid-template-columns: 280px 1fr 280px;
+            }
+            .wrapper { grid-column: 2; }
+            .game-container { display: contents; }
+            .game-card-1 { grid-column: 1; grid-row: 1; height: 300px; }
+            .game-card-2 { grid-column: 3; grid-row: 1; height: 300px; }
+        }
+
+        /* --- ESTILO DE BOTONES DE REDES --- */
+        .profile-section { margin-bottom: 35px; }
+        .profile-pic { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--amarillo); padding: 5px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        .links-list { display: flex; flex-direction: column; gap: 16px; }
+        
+        .btn-link {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 18px 25px;
+            border-radius: 100px; color: white; text-decoration: none; font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* --- HOVERS DE COLORES --- */
+        .hover-yt:hover { background: #FF0000 !important; box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); transform: scale(1.05); }
+        .hover-tt:hover { background: #000 !important; border-color: #00f2ea !important; box-shadow: 0 0 25px rgba(0, 242, 234, 0.4); transform: scale(1.05); }
+        .hover-ig:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important; box-shadow: 0 0 25px rgba(225, 48, 108, 0.5); transform: scale(1.05); }
+        .hover-kick:hover { background: #53fc18 !important; box-shadow: 0 0 25px rgba(83, 252, 24, 0.6); transform: scale(1.05); }
+        .hover-kick:hover i, .hover-kick:hover span { color: #000 !important; }
+        .hover-donate:hover { background: var(--amarillo) !important; box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); transform: scale(1.05); }
+        .hover-donate:hover i, .hover-donate:hover span { color: #000 !important; }
+
+        .btn-link i { font-size: 1.4rem; width: 30px; }
+        .fa-youtube { color: #FF0000; }
+        .fa-tiktok { color: #00f2ea; }
+        .fa-instagram { color: #e1306c; }
+        .fa-kickstarter-k { color: #53fc18; }
+        
+        footer { margin-top: 50px; font-size: 0.8rem; opacity: 0.6; grid-column: 1 / -1; text-align: center; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+    <div class="main-layout">
+        
+        <div class="game-container">
+            <a href="tetris.html" class="game-card game-card-1" style="background-image: url('portada-tetris.jpg');">
+                <h3>TETRIS<br>TRICOLOR</h3>
+            </a>
+
+            <a href="flappy.html" class="game-card game-card-2" style="background-image: url('portada-flappy.jpg');">
+                <h3>FLAPPY<br>GUACAMAYA</h3>
+            </a>
+        </div>
+
+        <div class="wrapper">
+            <div class="profile-section">
+                <img src="perfil.jpg" alt="SrRexGame" class="profile-pic">
+                <h1>SrRexGame</h1>
+                <div class="location">
+                    <i class="fas fa-map-marker-alt"></i> Zulia, Venezuela 
+                </div>
+            </div>
+
+            <div class="links-list">
+                <a href="https://www.youtube.com/@SrRexGameYT" class="btn-link hover-yt" target="_blank">
+                    <i class="fab fa-youtube"></i> <span>YouTube</span> <i class="fas fa-chevron-right" style="font-size: 0.7rem; opacity: 0.3;"></i>
+                </a>
+                
+                <a href="https://www.tiktok.com/@srrexgame?_r=1&_t=ZS-94wbCbtCkYm" class="btn-link hover-tt" target="_blank">
+                    <i class="fab fa-tiktok"></i> <span>TikTok</span> <i class="fas fa-chevron-right" style="font-size: 0.7rem; opacity: 0.3;"></i>
+                </a>
+
+                <a href="https://www.instagram.com/srrexgameyt?igsh=dms1aG9yd2tibGs2" class="btn-link hover-ig" target="_blank">
+                    <i class="fab fa-instagram"></i> <span>Instagram</span> <i class="fas fa-chevron-right" style="font-size: 0.7rem; opacity: 0.3;"></i>
+                </a>
+
+                <a href="https://kick.com/srrexgameyt" class="btn-link hover-kick" target="_blank">
+                    <i class="fas fa-kickstarter-k"></i> <span>Kick (Directos)</span> <i class="fas fa-chevron-right" style="font-size: 0.7rem; opacity: 0.3;"></i>
+                </a>
+
+                <a href="#" class="btn-link hover-donate">
+                    <i class="fas fa-hand-holding-dollar"></i> <span>Donación (Próximamente)</span> <i class="fas fa-chevron-right" style="font-size: 0.7rem; opacity: 0.3;"></i>
+                </a>
+            </div>
+            
+            <footer>HECHO CON ❤️ EN EL ZULIA</footer>
+        </div>
+
+    </div>
+
+    <script>
+        const colors = ["#FFD700", "#0033A0", "#CE1126"];
+        const trailLimit = 35;
+        let trail = [];
+
+        document.addEventListener('mousemove', (e) => {
+            if (trail.length < trailLimit) {
+                const p = document.createElement('div');
+                p.style.cssText = `
+                    position:fixed; left:${e.clientX}px; top:${e.clientY}px; 
+                    width:20px; height:20px; border-radius:50%; 
+                    background:${colors[Math.floor(Math.random()*3)]}; 
+                    pointer-events:none; z-index:9999; transition:0.6s; 
+                    box-shadow: 0 0 10px currentColor;
+                `;
+                document.body.appendChild(p);
+                trail.push(p);
+                setTimeout(() => { p.style.transform = 'scale(0)'; p.style.opacity = '0'; }, 10);
+                setTimeout(() => { p.remove(); trail.shift(); }, 600);
+            }
+        });
+    </script>
+</body>
+</html>
